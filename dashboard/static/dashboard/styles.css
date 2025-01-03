@@ -1,0 +1,316 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Barra lateral fija en la izquierda */
+.sidebar {
+    background-color: #2c3e50;
+    color: white;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar .nav-link.active {
+    background-color: #1abc9c;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #16a085;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+}
+
+.sidebar .user-profile {
+    padding: 20px;
+    text-align: center;
+}
+
+.sidebar .user-profile img {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+}
+
+.sidebar .user-profile h5 {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.sidebar .user-profile p {
+    font-size: 12px;
+    color: #bdc3c7;
+}
+
+/* Botón de cerrar sesión */
+#logout-btn {
+    background-color: #dc3545;
+    color: white;
+    width: 100%;
+}
+
+/* Ajuste del contenido principal con espacio para la barra lateral */
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.content .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.content .header .search-bar {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.content .header .search-bar input {
+    width: 100%;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.content .header .language,
+.content .header .date-time {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.content .header .language i,
+.content .header .date-time i {
+    margin-right: 5px;
+}
+
+.content .dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.content .dashboard-cards .card {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+@media (min-width: 576px) {
+    .content .dashboard-cards .card {
+        width: 48%;
+    }
+}
+
+@media (min-width: 768px) {
+    .content .dashboard-cards .card {
+        width: 23%;
+    }
+}
+
+.content .dashboard-cards .card i {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.content .dashboard-cards .card .btn {
+    margin-top: 10px;
+}
+
+.content .dashboard-cards .card-green {
+    background-color: #e8f5e9;
+    border: 1px solid #2ecc71;
+}
+
+.content .dashboard-cards .card-yellow {
+    background-color: #fffde7;
+    border: 1px solid #f1c40f;
+}
+
+.content .dashboard-cards .card-blue {
+    background-color: #e3f2fd;
+    border: 1px solid #3498db;
+}
+
+.content .dashboard-cards .card-red {
+    background-color: #ffebee;
+    border: 1px solid #e74c3c;
+}
+
+.content .summary-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.content .summary-cards .card {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid #ced4da;
+}
+
+@media (min-width: 768px) {
+    .content .summary-cards .card {
+        width: 48%;
+    }
+}
+
+.content .summary-cards .card h5 {
+    margin-bottom: 20px;
+}
+
+.content .summary-cards .card .row {
+    margin-bottom: 10px;
+}
+
+.content .summary-cards .card .row:last-child {
+    margin-bottom: 0;
+}
+
+.content .summary-cards .card .row div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content .summary-cards .card .row div span {
+    font-weight: bold;
+}
+
+
+.inventory-status-card {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.inventory-status-card .card-status {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: #ffffff; /* Texto blanco para contraste */
+}
+
+/* Estado bueno */
+.status-good {
+    background-color: #2ecc71; /* Verde */
+    border: 1px solid #27ae60;
+}
+
+/* Estado medio */
+.status-medium {
+    background-color: #f1c40f; /* Amarillo */
+    border: 1px solid #f39c12;
+}
+
+/* Estado malo */
+.status-bad {
+    background-color: #e74c3c; /* Rojo */
+    border: 1px solid #c0392b;
+}
+
+.contact-form .form-control,
+.contact-form .btn {
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.contact-info {
+    margin-top: 20px;
+}
+
+.contact-info h4 {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.contact-info p {
+    display: flex;
+    align-items: center;
+}
+
+.contact-info p i {
+    margin-right: 10px;
+}
+
+.map h4 {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Ajustar el diseño de las tarjetas en .dashboard-cards */
+.content .dashboard-cards .card {
+    width: 23%; /* Tamaño uniforme para todas las tarjetas */
+    height: 250px; /* Altura fija */
+    margin-bottom: 20px; /* Espaciado uniforme entre tarjetas */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-radius: 10px; /* Bordes redondeados */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+.content .dashboard-cards .card i {
+    font-size: 3rem; /* Tamaño de icono uniforme */
+    margin-bottom: 10px;
+}
+
+.content .dashboard-cards .card .btn {
+    margin-top: auto;
+    width: 80%; /* Botón con ancho uniforme */
+    font-weight: bold;
+}
+
+/* Colores para las tarjetas */
+.content .dashboard-cards .card-green {
+    background-color: #e8f5e9;
+    border: 1px solid #2ecc71;
+}
+
+.content .dashboard-cards .card-yellow {
+    background-color: #fffde7;
+    border: 1px solid #f1c40f;
+}
+
+.content .dashboard-cards .card-blue {
+    background-color: #e3f2fd;
+    border: 1px solid #3498db;
+}
+
+.content .dashboard-cards .card-red {
+    background-color: #ffebee;
+    border: 1px solid #e74c3c;
+}
+
+/* Diseño responsivo para tarjetas */
+@media (max-width: 768px) {
+    .content .dashboard-cards .card {
+        width: 48%; /* Dos tarjetas por fila en pantallas medianas */
+    }
+}
+
+@media (max-width: 576px) {
+    .content .dashboard-cards .card {
+        width: 100%; /* Una tarjeta por fila en pantallas pequeñas */
+    }
+}

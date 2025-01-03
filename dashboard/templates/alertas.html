@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas - Gestión Inventarial</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+    <style>
+        .card-header i {
+            margin-right: 10px;
+        }
+        .alert-card {
+            flex: 1 1 calc(33.333% - 1rem);
+            max-width: calc(33.333% - 1rem);
+            margin: 0.5rem;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .alert-card:hover {
+            transform: translateY(-5px);
+        }
+        .alerts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .alert-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-align: center; /* Centrar los títulos */
+        }
+        .no-alerts {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-container" class="d-flex">
+        <!-- Barra lateral de navegación -->
+        <div class="sidebar p-3">
+            <div class="user-profile text-center">
+                <img src="https://storage.googleapis.com/a1aa/image/TZKiL3xWXOYpMVRekDofOKzVhGegBP5KpotumVbFqvqRInUnA.jpg" alt="User profile picture" class="rounded-circle" width="60" height="60">
+                <h5>Juanito Alcachofa</h5>
+                <p>Administrador de Inventario</p>
+            </div>
+            <ul class="nav flex-column mt-4">
+                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'inventario' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+            </ul>
+            <div class="mt-auto text-center">
+                <button id="logout-btn" class="btn btn-danger w-100">Cerrar Sesión</button>
+                <p class="mt-2">Powered by Subash © 2022</p>
+                <p>v 1.1.2</p>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="content p-4 w-100">
+            <!-- Encabezado -->
+            <div class="header d-flex justify-content-between align-items-center flex-wrap mb-4">
+                <h2>Alertas de Inventario</h2>
+                <div class="date-time d-flex align-items-center">
+                    <i class="fas fa-calendar-day me-2"></i>
+                    <span id="datetime"></span>
+                </div>
+            </div>
+
+            <!-- Sección de Alertas -->
+            <div class="mb-5">
+                <h4 class="alert-title">Productos Próximos a Caducar</h4>
+                <div class="alerts-container">
+                    {% for producto in productos_caducar %}
+                        <div class="card alert-card bg-warning text-white">
+                            <div class="card-header"><i class="fas fa-exclamation-triangle"></i>{{ producto.nombre }}</div>
+                            <div class="card-body">
+                                <p class="card-text">Fecha de caducidad: {{ producto.fecha_caducidad }}</p>
+                                <p class="card-text">Cantidad: {{ producto.cantidad }}</p>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="no-alerts">No hay productos próximos a caducar.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div>
+                <h4 class="alert-title">Productos con Stock Bajo</h4>
+                <div class="alerts-container">
+                    {% for producto in productos_stock_bajo %}
+                        <div class="card alert-card bg-danger text-white">
+                            <div class="card-header"><i class="fas fa-exclamation-circle"></i>{{ producto.nombre }}</div>
+                            <div class="card-body">
+                                <p class="card-text">Cantidad disponible: {{ producto.cantidad }}</p>
+                                <p class="card-text">Fecha de caducidad: {{ producto.fecha_caducidad }}</p>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="no-alerts">No hay productos con stock bajo.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const date = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('datetime').textContent = date.toLocaleDateString('es-ES', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

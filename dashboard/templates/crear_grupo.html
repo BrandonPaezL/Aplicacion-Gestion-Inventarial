@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Grupo</title>
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <!-- Barra lateral y perfil del usuario -->
+    <div id="app-container">
+        <!-- Barra lateral con opciones de navegación -->
+        <div class="sidebar p-3">
+            <div class="user-profile text-center">
+                <img src="https://storage.googleapis.com/a1aa/image/TZKiL3xWXOYpMVRekDofOKzVhGegBP5KpotumVbFqvqRInUnA.jpg" alt="User profile picture" class="rounded-circle" width="60" height="60">
+                <h5>Juanito Alcachofa</h5>
+                <p>Químico Farmacéutico</p>
+            </div>
+            <ul class="nav flex-column mt-4">
+                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'presupuesto' %}"><i class="fas fa-money-bill-wave"></i> Presupuesto</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'inventario' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+            </ul>
+            <div class="mt-auto text-center">
+                <button id="logout-btn" class="btn btn-danger w-100">Cerrar Sesión</button>
+                <p class="mt-2">Powered by Subash © 2022</p>
+                <p>v 1.1.2</p>
+            </div>
+        </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <!-- Encabezado con barra de búsqueda e idioma -->
+        <div class="header d-flex justify-content-between align-items-center flex-wrap">
+            <div class="search-bar mb-2 mb-md-0">
+                <input placeholder="Search for anything here.." type="text"/>
+            </div>
+            <div class="language d-flex align-items-center mb-2 mb-md-0">
+                <i class="fas fa-language"></i>
+                <span>Spanish (ES)</span>
+            </div>
+            <div class="date-time d-flex align-items-center">
+                <i class="fas fa-sun"></i>
+                <span>Buenos Dias</span>
+                <span id="datetime"></span>
+            </div>
+        </div>
+
+        <!-- Formulario para crear un grupo -->
+        <div class="container mt-5">
+            <h2>Crear Nuevo Grupo</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_nombre" class="form-label">Nombre del Grupo</label>
+                    {{ form.nombre }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_categoria" class="form-label">Categoría</label>
+                    {{ form.categoria }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_color" class="form-label">Color</label>
+                    {{ form.color }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_medicamentos" class="form-label">Medicamentos</label>
+                    {{ form.medicamentos }}
+                </div>
+                <button type="submit" class="btn btn-success">Guardar Grupo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script para actualizar fecha y hora -->
+    <script>
+        function updateDateTime() {
+            const date = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('datetime').textContent = date.toLocaleDateString('es-ES', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Llamada inicial
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto - Gestión Inventarial</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+</head>
+<body>
+
+    <!-- Contenedor principal con diseño de barra lateral y contenido -->
+    <div id="app-container">
+        <!-- Barra lateral con opciones de navegación -->
+        <div class="sidebar p-3">
+            <div class="user-profile text-center">
+                <img src="https://storage.googleapis.com/a1aa/image/TZKiL3xWXOYpMVRekDofOKzVhGegBP5KpotumVbFqvqRInUnA.jpg" alt="User profile picture" class="rounded-circle" width="60" height="60">
+                <h5>Juanito Alcachofa</h5>
+                <p>Químico Farmacéutico</p>
+            </div>
+            <ul class="nav flex-column mt-4">
+                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{% url 'presupuesto' %}"><i class="fas fa-money-bill-wave"></i> Presupuesto</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'inventario' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+            </ul>
+            <div class="mt-auto text-center">
+                <button id="logout-btn" class="btn btn-danger w-100">Cerrar Sesión</button>
+                <p class="mt-2">Powered by Subash © 2022</p>
+                <p>v 1.1.2</p>
+            </div>
+        </div>
+
+        <!-- Contenido principal de la página -->
+        <div class="content">
+            <!-- Encabezado con búsqueda, idioma y hora -->
+            <div class="header d-flex justify-content-between align-items-center flex-wrap mb-4">
+                <h2>Resumen de Presupuesto</h2>
+                <button class="btn btn-primary">Ver Historial Completo</button>
+            </div>
+
+            <!-- Tarjetas de Información Financiera -->
+            <div class="budget-cards d-flex flex-wrap justify-content-between mb-4">
+                <div class="card card-yellow text-center">
+                    <h5>Presupuesto Total</h5>
+                    <p>$2,000,000 CLP</p>
+                </div>
+                <div class="card card-green text-center">
+                    <h5>Gasto Actual</h5>
+                    <p>$1,200,000 CLP</p>
+                </div>
+                <div class="card card-blue text-center">
+                    <h5>Porcentaje Utilizado</h5>
+                    <p>60%</p>
+                </div>
+                <div class="card card-red text-center">
+                    <h5>Presupuesto Restante</h5>
+                    <p>$800,000 CLP</p>
+                </div>
+            </div>
+
+            <!-- Gráfica de Gasto Mensual -->
+            <div class="monthly-expenses mb-4">
+                <h4>Gasto Mensual</h4>
+                <canvas id="monthlyExpensesChart"></canvas>
+            </div>
+
+            <!-- Tabla de Transacciones Recientes -->
+            <div class="transaction-history">
+                <h4>Transacciones Recientes</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Monto</th>
+                            <th>Tipo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>01/11/2024</td>
+                            <td>Compra de Insumos</td>
+                            <td>$150,000 CLP</td>
+                            <td>Gasto</td>
+                        </tr>
+                        <tr>
+                            <td>15/10/2024</td>
+                            <td>Ingreso Extraordinario</td>
+                            <td>$300,000 CLP</td>
+                            <td>Ingreso</td>
+                        </tr>
+                        <!-- Más filas aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para generar el gráfico de gasto mensual -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Configuración de la gráfica de gasto mensual
+        const ctx = document.getElementById('monthlyExpensesChart').getContext('2d');
+        const monthlyExpensesChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'], // Ejemplo de meses
+                datasets: [{
+                    label: 'Gasto Mensual (CLP)',
+                    data: [500000, 400000, 300000, 200000, 100000], // Datos de ejemplo
+                    backgroundColor: 'rgba(241, 196, 15, 0.7)', // Color amarillo
+                    borderColor: 'rgba(243, 156, 18, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

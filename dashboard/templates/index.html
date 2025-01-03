@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gestión Inventarial</title>
+    <!-- Carga de Bootstrap y Font Awesome para estilos e íconos -->
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+
+</head>
+<body>
+
+    <!-- Contenedor principal con diseño de barra lateral y contenido (Oculto al inicio) -->
+    <div id="app-container">
+    <!-- Barra lateral con opciones de navegación -->
+    <div class="sidebar p-3">
+        <div class="user-profile text-center">
+            <img src="https://storage.googleapis.com/a1aa/image/TZKiL3xWXOYpMVRekDofOKzVhGegBP5KpotumVbFqvqRInUnA.jpg" alt="User profile picture" class="rounded-circle" width="60" height="60">
+            <h5>Juanito Alcachofa</h5>
+            <p>Químico Farmacéutico</p>
+        </div>
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'presupuesto' %}"><i class="fas fa-money-bill-wave"></i> Presupuesto</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'inventario' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+        </ul>
+        <div class="mt-auto text-center">
+            <button id="logout-btn" class="btn btn-danger w-100">Cerrar Sesión</button>
+            <p class="mt-2">Powered by Subash © 2022</p>
+            <p>v 1.1.2</p>
+        </div>
+    </div>
+
+        <!-- Contenido principal de la página -->
+        <div class="content">
+            <!-- Encabezado con búsqueda, idioma y hora -->
+            <div class="header d-flex justify-content-between align-items-center flex-wrap">
+                <!-- Barra de búsqueda -->
+                <div class="search-bar mb-2 mb-md-0">
+                    <input placeholder="Search for anything here.." type="text"/>
+                </div>
+                <!-- Selección de idioma -->
+                <div class="language d-flex align-items-center mb-2 mb-md-0">
+                    <i class="fas fa-language"></i>
+                    <span>Spanish (ES)</span>
+                </div>
+                <!-- Fecha y hora actualizadas en tiempo real -->
+                <div class="date-time d-flex align-items-center">
+                    <i class="fas fa-sun"></i>
+                    <span>Buenos Dias</span>
+                    <span id="datetime"></span>
+                </div>
+            </div>
+            <!-- Tarjetas del Dashboard -->
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- Inventario -->
+                    <div class="col-md-3 mb-4">
+                        <div class="card text-center border-success">
+                            <div class="card-body">
+                                <i class="fas fa-boxes fa-3x text-success mb-3"></i>
+                                <h5 class="card-title">Inventario</h5>
+                                <p class="card-text">Total de Productos: <strong>{{ total_medicines }}</strong></p>
+                                <a href="{% url 'lista_inventario' %}" class="btn btn-success">Ver Inventario</a>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Registro de Movimientos -->
+                    <div class="col-md-3 mb-4">
+                        <div class="card text-center border-info">
+                            <div class="card-body">
+                                <i class="fas fa-exchange-alt fa-3x text-info mb-3"></i>
+                                <h5 class="card-title">Movimientos</h5>
+                                <p class="card-text">Historial de movimientos</p>
+                                <a href="{% url 'audit_log' %}" class="btn btn-info">Ver Movimientos</a>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Reportes -->
+                    <div class="col-md-3 mb-4">
+                        <div class="card text-center border-warning">
+                            <div class="card-body">
+                                <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
+                                <h5 class="card-title">Reportes</h5>
+                                <p class="card-text">Reportes disponibles</p>
+                                <a href="{% url 'reportes' %}" class="btn btn-warning text-dark">Ver Reportes</a>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Alertas -->
+                    <div class="col-md-3 mb-4">
+                        <div class="card text-center border-danger">
+                            <div class="card-body">
+                                <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                                <h5 class="card-title">Alertas</h5>
+                                <p class="card-text">Revisa las alertas importantes</p>
+                                <a href="{% url 'alertas' %}" class="btn btn-danger">Ver Alertas</a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <!-- Tarjetas de resumen -->
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- Inventario -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Inventario</span>
+                                <a href="#" class="text-primary">Go to Configuration &raquo;</a>
+                            </div>
+                            <div class="card-body d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_medicines }}</h4>
+                                    <p>Total no of Medicines</p>
+                                </div>
+                                <div>
+                                    <h4>{{ total_medicine_groups }}</h4>
+                                    <p>Medicine Groups</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Reporte rápido -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Reporte rápido</span>
+                                <a href="#" class="text-primary">January 2022 &raquo;</a>
+                            </div>
+                            <div class="card-body d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_sold_medicines }}</h4>
+                                    <p>Total medicamentos vendidos</p>
+                                </div>
+                                <div>
+                                    <h4>{{ total_invoices }}</h4>
+                                    <p>Facturas generadas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Mi Farmacia -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Mi Farmacia</span>
+                                <a href="#" class="text-primary">Go to User Management &raquo;</a>
+                            </div>
+                            <div class="card-body d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_providers }}</h4>
+                                    <p>Total de proveedores</p>
+                                </div>
+                                <div>
+                                    <h4>{{ total_users }}</h4>
+                                    <p>Total de usuarios</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Clientes -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <span>Clientes</span>
+                                <a href="#" class="text-primary">Go to Customers Page &raquo;</a>
+                            </div>
+                            <div class="card-body d-flex justify-content-between">
+                                <div>
+                                    <h4>{{ total_clients }}</h4>
+                                    <p>N° Clientes</p>
+                                </div>
+                                <div>
+                                    <h4>{{ top_selling_item }}</h4>
+                                    <p>Artículo más vendido</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para manejar login, logout y actualizar fecha/hora -->
+    <script>
+ 
+        // Actualizar fecha y hora en tiempo real
+        function updateDateTime() {
+            const date = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('datetime').textContent = date.toLocaleDateString('es-ES', options);
+        }
+        setInterval(updateDateTime, 1000);
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const inventoryStatus = document.querySelector('.card-status');
+
+        // Simulación de estado, cambia "medium" a "good" o "bad" para probar
+        const status = "medium"; 
+
+        if (status === "good") {
+            inventoryStatus.classList.add('status-good');
+            inventoryStatus.querySelector('h5').textContent = "Bueno";
+        } else if (status === "medium") {
+            inventoryStatus.classList.add('status-medium');
+            inventoryStatus.querySelector('h5').textContent = "Medio";
+        } else if (status === "bad") {
+            inventoryStatus.classList.add('status-bad');
+            inventoryStatus.querySelector('h5').textContent = "Malo";
+        }
+        });
+
+    </script>
+    
+    {% if medicamentos_caducar or medicamentos_stock_bajo or presupuesto_bajo %}
+    <script>
+        alert("¡Precaución! Hay alertas pendientes. Revisa la sección de alertas.");
+    </script>
+    {% endif %}
+
+</body>
+</html>

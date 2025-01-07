@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Modelo de Producto
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -81,3 +81,12 @@ class Presupuesto(models.Model):
 
     def __str__(self):
         return f"Presupuesto: {self.monto_disponible} CLP"
+    
+
+class AuditLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    action = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.user} - {self.action} - {self.date}"

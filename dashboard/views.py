@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import Medicamento, Presupuesto, Producto, Grupo  # Usamos los modelos reales definidos en models.py
+from .models import AuditLog, Medicamento, Presupuesto, Producto, Grupo  # Usamos los modelos reales definidos en models.py
 from .forms import ProductoForm, GrupoForm
 from django.db.models import Sum  # Para realizar agregaciones como sumas
 from django.db.models import Count
@@ -66,8 +66,8 @@ def crear_grupo(request):
     return render(request, 'crear_grupo.html', {'form': form})
 
 # Log de auditoría
-def audit_log(request):
-    audit_logs = []
+def audit_log_view(request):
+    audit_logs = AuditLog.objects.all().order_by('-date')
     return render(request, 'audit_log.html', {'audit_logs': audit_logs})
 
 # Presupuesto

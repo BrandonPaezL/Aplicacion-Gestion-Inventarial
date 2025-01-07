@@ -314,3 +314,5 @@ body {
         width: 100%; /* Una tarjeta por fila en pantallas pequeñas */
     }
 }
+
+.custom-card { background-color: #2c3e50; }

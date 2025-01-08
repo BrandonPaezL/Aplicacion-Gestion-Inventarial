@@ -1,10 +1,11 @@
 from datetime import timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from .models import AuditLog, Medicamento, Presupuesto, Producto, Grupo  # Usamos los modelos reales definidos en models.py
-from .forms import ProductoForm, GrupoForm
+from .models import AuditLog, Medicamento, Presupuesto, Producto, Grupo, Venta # Usamos los modelos reales definidos en models.py
+from .forms import ProductoForm, GrupoForm, EntregaElementosForm
 from django.db.models import Sum  # Para realizar agregaciones como sumas
 from django.db.models import Count
+
 
 # Vista principal
 def index(request):
@@ -152,3 +153,27 @@ def inventario_dashboard(request):
         'total_medicamentos': total_medicamentos,
         'grupos_medicamentos': grupos_medicamentos
     })
+
+
+def entrega_elementos(request):
+    return render(request, 'entrega_elementos.html')
+
+
+
+def entrega_elementos(request):
+    if request.method == 'POST':
+        form = EntregaElementosForm(request.POST)
+        if form.is_valid():
+            venta = form.save(commit=False)
+            producto = venta.producto
+            if producto.cantidad >= venta.cantidad:
+                producto.cantidad -= venta.cantidad
+                producto.save()
+                venta.fecha_venta = timezone.now()
+                venta.save()
+                return redirect('entrega_elementos')
+            else:
+                form.add_error('cantidad', 'Cantidad insuficiente en inventario')
+    else:
+        form = EntregaElementosForm()
+    return render(request, 'entrega_elementos.html', {'form': form})

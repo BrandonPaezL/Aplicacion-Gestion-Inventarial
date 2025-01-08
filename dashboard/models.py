@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 # Modelo de Producto
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
@@ -29,7 +31,8 @@ class Venta(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='ventas')
     cantidad = models.PositiveIntegerField()
     factura_id = models.CharField(max_length=50, null=True, blank=True)
-    fecha_venta = models.DateField()
+    fecha_venta = models.DateField(default=timezone.now)
+    destinatario = models.CharField(max_length=100, default='') 
 
     def __str__(self):
         return f"{self.cantidad} de {self.producto.nombre}"

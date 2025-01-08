@@ -2,15 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Grupo</title>
-    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Entrega de Elementos</title>
+    <!-- Carga de Bootstrap y Font Awesome para estilos e íconos -->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
 </head>
 <body>
-    <!-- Barra lateral y perfil del usuario -->
+
+    <!-- Contenedor principal con diseño de barra lateral y contenido -->
     <div id="app-container">
         <!-- Barra lateral con opciones de navegación -->
         <div class="sidebar p-3">
@@ -26,6 +28,7 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'entrega_elementos' %}"><i class="fas fa-truck"></i> Entrega de Elementos</a></li>
             </ul>
             <div class="mt-auto text-center">
                 <button id="logout-btn" class="btn btn-danger w-100">Cerrar Sesión</button>
@@ -34,59 +37,58 @@
             </div>
         </div>
 
-    <!-- Contenido principal -->
-    <div class="content">
-        <!-- Encabezado con barra de búsqueda e idioma -->
-        <div class="header d-flex justify-content-between align-items-center flex-wrap">
-            <div class="search-bar mb-2 mb-md-0">
-                <input placeholder="Search for anything here.." type="text"/>
+        <!-- Contenido principal de la página -->
+        <div class="content">
+            <!-- Encabezado con búsqueda, idioma y hora -->
+            <div class="header d-flex justify-content-between align-items-center flex-wrap">
+                <!-- Barra de búsqueda -->
+                <div class="search-bar mb-2 mb-md-0">
+                    <input placeholder="Search for anything here.." type="text"/>
+                </div>
+                <!-- Selección de idioma -->
+                <div class="language d-flex align-items-center mb-2 mb-md-0">
+                    <i class="fas fa-language"></i>
+                    <span>Spanish (ES)</span>
+                </div>
+                <!-- Fecha y hora actualizadas en tiempo real -->
+                <div class="date-time d-flex align-items-center">
+                    <i class="fas fa-sun"></i>
+                    <span id="datetime"></span>
+                </div>
             </div>
-            <div class="language d-flex align-items-center mb-2 mb-md-0">
-                <i class="fas fa-language"></i>
-                <span>Spanish (ES)</span>
+            <!-- Formulario de entrega de elementos -->
+            <div class="container mt-4">
+                <h2>Entrega de Elementos</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.producto.label_tag }}
+                        {{ form.producto }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.cantidad.label_tag }}
+                        {{ form.cantidad }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.destinatario.label_tag }}
+                        {{ form.destinatario }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entregar</button>
+                </form>
             </div>
-            <div class="date-time d-flex align-items-center">
-                <i class="fas fa-sun"></i>
-                <span>Buenos Dias</span>
-                <span id="datetime"></span>
-            </div>
-        </div>
-
-        <!-- Formulario para crear un grupo -->
-        <div class="container mt-5">
-            <h2>Crear Nuevo Grupo</h2>
-            <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="id_nombre" class="form-label">Nombre del Grupo</label>
-                    {{ form.nombre }}
-                </div>
-                <div class="mb-3">
-                    <label for="id_categoria" class="form-label">Categoría</label>
-                    {{ form.categoria }}
-                </div>
-                <div class="mb-3">
-                    <label for="id_color" class="form-label">Color</label>
-                    {{ form.color }}
-                </div>
-                <div class="mb-3">
-                    <label for="id_medicamentos" class="form-label">Medicamentos</label>
-                    {{ form.medicamentos }}
-                </div>
-                <button type="submit" class="btn btn-success">Guardar Grupo</button>
-            </form>
         </div>
     </div>
 
-    <!-- Script para actualizar fecha y hora -->
+    <!-- Script para manejar login, logout y actualizar fecha/hora -->
     <script>
+        // Actualizar fecha y hora en tiempo real
         function updateDateTime() {
             const date = new Date();
             const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
             document.getElementById('datetime').textContent = date.toLocaleDateString('es-ES', options);
         }
         setInterval(updateDateTime, 1000);
-        updateDateTime(); // Llamada inicial
     </script>
+
 </body>
 </html>

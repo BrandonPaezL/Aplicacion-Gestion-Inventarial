@@ -20,24 +20,29 @@ from django.urls import path
 from dashboard import views
 
 
+from django.contrib import admin
+from django.urls import path
+from dashboard import views
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('inventario/', views.lista_inventario, name='lista_inventario'),
     path('inventario/agregar/', views.agregar_producto, name='agregar_producto'),
     path('inventario/editar/<int:producto_id>/', views.editar_producto, name='editar_producto'),
     path('inventario/eliminar/<int:producto_id>/', views.eliminar_producto, name='eliminar_producto'),
-    path('inventario/', views.inventario, name='inventario'),
     path('grupos/', views.grupos, name='grupos'),
     path('crear_grupo/', views.crear_grupo, name='crear_grupo'),
-    path('medicamentos_caducar/',views.alertas, name='medicamentos_caducar'),
+    path('medicamentos_caducar/', views.alertas, name='medicamentos_caducar'),
     path('audit-log/', views.audit_log_view, name='audit_log'),
     path('presupuesto/', views.presupuesto, name='presupuesto'),
     path('contacto/', views.contacto, name='contacto'),
     path('reportes/', views.reportes, name='reportes'),
     path('productos/', views.lista_productos, name='lista_productos'),
     path('alertas/', views.alertas, name='alertas'),
-    path('reportes/', views.reportes, name='reportes'),
     path('entrega_elementos/', views.entrega_elementos, name='entrega_elementos'),
+    path('login/', views.login_view, name='login'),
+    path('registro/', views.registro_view, name='registro'),
+    path('logout/', views.logout_view, name='logout'),
 ]
 
 

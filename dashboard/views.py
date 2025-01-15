@@ -7,6 +7,7 @@ from django.db.models import Sum  # Para realizar agregaciones como sumas
 from django.db.models import Count # Para realizar agregaciones como contar
 from django.contrib.auth import authenticate, login, logout # Para autenticar usuarios
 from django.contrib.auth.decorators import login_required # Para proteger vistas con autenticación
+from django.contrib import messages 
 
 
 
@@ -220,8 +221,10 @@ def registro_view(request):
     if request.method == 'POST':
         form = RegistroForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            form.save()  # Guarda el usuario
+            # Agrega un mensaje para mostrar en la vista de login
+            messages.success(request, 'Usuario registrado satisfactoriamente.')
+            return redirect('login')  # Redirige a la vista de login
     else:
         form = RegistroForm()
     return render(request, 'registro.html', {'form': form})

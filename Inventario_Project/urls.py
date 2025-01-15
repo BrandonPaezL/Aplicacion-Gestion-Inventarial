@@ -41,7 +41,7 @@ urlpatterns = [
     path('alertas/', views.alertas, name='alertas'),
     path('entrega_elementos/', views.entrega_elementos, name='entrega_elementos'),
     path('login/', views.login_view, name='login'),
-    path('registro/', views.registro_view, name='registro'),
+    path('register/', views.registro_view, name='registro'),
     path('logout/', views.logout_view, name='logout'),
 ]
 

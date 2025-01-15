@@ -13,29 +13,31 @@
 <body>
 
     <!-- Contenedor principal con diseño de barra lateral y contenido -->
-    <div id="app-container">
-        <!-- Barra lateral con opciones de navegación -->
-        <div class="sidebar p-3">
-            <div class="user-profile text-center">
-                <img src="https://storage.googleapis.com/a1aa/image/TZKiL3xWXOYpMVRekDofOKzVhGegBP5KpotumVbFqvqRInUnA.jpg" alt="User profile picture" class="rounded-circle" width="60" height="60">
-                <h5>Juanito Alcachofa</h5>
-                <p>Químico Farmacéutico</p>
-            </div>
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'presupuesto' %}"><i class="fas fa-money-bill-wave"></i> Presupuesto</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'lista_inventario' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'entrega_elementos' %}"><i class="fas fa-truck"></i> Entrega de Elementos</a></li>
-            </ul>
-            <div class="mt-auto text-center">
-                <button id="logout-btn" class="btn btn-danger w-100">Cerrar Sesión</button>
-                <p class="mt-2">Powered by Subash © 2022</p>
-                <p>v 1.1.2</p>
-            </div>
+    <!-- Barra lateral con opciones de navegación -->
+    <div class="sidebar p-3">
+        <div class="user-profile text-center">
+            <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
+            <h5>{{ user.username }}</h5>
+            <p>Ilustre Municipalidad de La Granja</p>
         </div>
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'presupuesto' %}"><i class="fas fa-money-bill-wave"></i> Presupuesto</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'lista_inventario' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'audit_log' %}"><i class="fas fa-history"></i> Audit Log</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'contacto' %}"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'entrega_elementos' %}"><i class="fas fa-truck"></i> Entrega de Elementos</a></li>
+        </ul>
+        <div class="mt-auto text-center">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">Cerrar Sesión</button>
+            </form>
+            <p class="mt-2"></p>
+            <p></p>
+        </div>
+    </div>
 
         <!-- Contenido principal de la página -->
         <div class="content">

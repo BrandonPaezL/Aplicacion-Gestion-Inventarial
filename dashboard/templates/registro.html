@@ -14,39 +14,42 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #1a1a1a;
-            color: #ffffff;
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+            color: #000000;
+            font-family: Arial, sans-serif;
         }
         .form-container {
             background-color: #ffffff;
-            color: #000000;
             border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
             width: 100%;
             max-width: 400px;
+            padding: 20px;
         }
         .form-container h1 {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
             text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
         }
-        .form-container .form-control {
+        .form-control {
+            border-radius: 5px;
             margin-bottom: 15px;
-            height: 45px;
         }
-        .form-container .btn {
-            width: 100%;
+        .btn {
             background-color: #007bff;
             color: #ffffff;
-            font-weight: bold;
+            border-radius: 5px;
+            width: 100%;
         }
-        .form-container .btn:hover {
+        .btn:hover {
             background-color: #0056b3;
         }
-        .form-container .text-center {
+        .text-center {
+            text-align: center;
             margin-top: 15px;
+        }
+        .text-center a {
+            color: #007bff;
         }
     </style>
 </head>
@@ -55,23 +58,22 @@
         <h1>Registro</h1>
         <form method="post">
             {% csrf_token %}
-
             <div class="mb-3">
                 <label for="username" class="form-label">Nombre de usuario</label>
-                <input type="text" id="username" name="username" class="form-control" required>
+                {{ form.username }}
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" id="email" name="email" class="form-control" required>
+                {{ form.email }}
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+                <label for="password1" class="form-label">Contraseña</label>
+                {{ form.password1 }}
             </div>
             <div class="mb-3">
-                <label for="confirm-password" class="form-label">Confirmar contraseña</label>
-                <input type="password" id="confirm-password" name="confirm_password" class="form-control" required>
-            </div>
+                <label for="password2" class="form-label">Confirmar contraseña</label>
+                {{ form.password2 }}
+            </div>            
             <button type="submit" class="btn btn-primary">Registrarse</button>
         </form>
         <div class="text-center">

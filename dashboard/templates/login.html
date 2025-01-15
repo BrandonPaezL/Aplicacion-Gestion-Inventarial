@@ -51,10 +51,28 @@
         .text-muted a {
             color: #007bff;
         }
+        .alert {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="login-container text-center">
+        <!-- Bloque para mostrar mensajes -->
+        {% if messages %}
+        <div id="message-popup" class="alert alert-success" role="alert">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('message-popup').style.display = 'none';
+            }, 5000); // Ocultar el mensaje después de 5 segundos
+        </script>
+        {% endif %}
+
+        <!-- Formulario de inicio de sesión -->
         <img alt="User icon" src="{% static 'dashboard/img/login.png' %}" style="width: 100px; height: 100px;" />
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
@@ -72,3 +90,4 @@
     </div>
 </body>
 </html>
+

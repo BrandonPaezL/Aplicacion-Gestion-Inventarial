@@ -13,14 +13,12 @@
 </head>
 <body>
 
-    <!-- Contenedor principal con diseño de barra lateral y contenido (Oculto al inicio) -->
-    <div id="app-container">
     <!-- Barra lateral con opciones de navegación -->
     <div class="sidebar p-3">
         <div class="user-profile text-center">
-            <img src="https://storage.googleapis.com/a1aa/image/TZKiL3xWXOYpMVRekDofOKzVhGegBP5KpotumVbFqvqRInUnA.jpg" alt="User profile picture" class="rounded-circle" width="60" height="60">
-            <h5>Juanito Alcachofa</h5>
-            <p>Químico Farmacéutico</p>
+            <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
+            <h5>{{ user.username }}</h5>
+            <p>Ilustre Municipalidad de La Granja</p>
         </div>
         <ul class="nav flex-column mt-4">
             <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
@@ -36,29 +34,29 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger w-100">Cerrar Sesión</button>
             </form>
-            <p class="mt-2">Powered by Subash © 2022</p>
-            <p>v 1.1.2</p>
+            <p class="mt-2"></p>
+            <p></p>
         </div>
     </div>
 
         <!-- Contenido principal de la página -->
         <div class="content">
             <!-- Encabezado con búsqueda, idioma y hora -->
-            <div class="header d-flex justify-content-between align-items-center flex-wrap">
-                <!-- Barra de búsqueda -->
-                <div class="search-bar mb-2 mb-md-0">
-                    <input placeholder="Search for anything here.." type="text"/>
-                </div>
-                <!-- Selección de idioma -->
-                <div class="language d-flex align-items-center mb-2 mb-md-0">
-                    <i class="fas fa-language"></i>
-                    <span>Spanish (ES)</span>
-                </div>
-                <!-- Fecha y hora actualizadas en tiempo real -->
-                <div class="date-time d-flex align-items-center">
-                    <i class="fas fa-sun"></i>
-                    <span id="datetime"></span>
-                </div>
+            <div class="header d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <!-- Barra de búsqueda -->
+            <div class="search-bar mb-2 mb-md-0">
+                <input class="form-control" placeholder="Busca lo que necesites.." type="text"/>
+            </div>
+            <!-- Selección de idioma -->
+            <div class="language d-flex align-items-center mb-2 mb-md-0">
+                <i class="fas fa-language me-2"></i>
+                <span>Spanish (ES)</span>
+            </div>
+            <!-- Fecha y hora actualizadas en tiempo real -->
+            <div class="date-time d-flex align-items-center">
+                <i class="fas fa-sun me-2"></i>
+                <span id="datetime"></span>
+            </div>
             </div>
             <!-- Tarjetas del Dashboard -->
             <div class="container mt-4">
@@ -69,7 +67,7 @@
                             <div class="card-body">
                                 <i class="fas fa-boxes fa-3x text-success mb-3"></i>
                                 <h5 class="card-title">Inventario</h5>
-                                <p class="card-text">Total de Productos: <strong>{{ total_medicines }}</strong></p>
+                                <p class="card-text"><strong>{{ total_medicines }}</strong></p>
                                 <a href="{% url 'lista_inventario' %}" class="btn btn-success">Ver Inventario</a>
                             </div>
                         </div>
@@ -81,7 +79,7 @@
                             <div class="card-body">
                                 <i class="fas fa-exchange-alt fa-3x text-info mb-3"></i>
                                 <h5 class="card-title">Movimientos</h5>
-                                <p class="card-text">Historial de movimientos</p>
+                                <p class="card-text"></p>
                                 <a href="{% url 'audit_log' %}" class="btn btn-info">Ver Movimientos</a>
                             </div>
                         </div>
@@ -93,7 +91,7 @@
                             <div class="card-body">
                                 <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
                                 <h5 class="card-title">Reportes</h5>
-                                <p class="card-text">Reportes disponibles</p>
+                                <p class="card-text"></p>
                                 <a href="{% url 'reportes' %}" class="btn btn-warning text-dark">Ver Reportes</a>
                             </div>
                         </div>
@@ -105,7 +103,7 @@
                             <div class="card-body">
                                 <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
                                 <h5 class="card-title">Alertas</h5>
-                                <p class="card-text">Revisa las alertas importantes</p>
+                                <p class="card-text"></p>
                                 <a href="{% url 'alertas' %}" class="btn btn-danger">Ver Alertas</a>
                             </div>
                         </div>

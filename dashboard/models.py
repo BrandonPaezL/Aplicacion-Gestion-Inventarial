@@ -93,3 +93,13 @@ class AuditLog(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.action} - {self.date}"
+
+
+class Entrega(models.Model):
+    fecha = models.DateField()
+    elemento = models.CharField(max_length=255)
+    cantidad = models.PositiveIntegerField()
+    responsable = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.elemento} - {self.fecha}"

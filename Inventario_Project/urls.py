@@ -43,6 +43,11 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('register/', views.registro_view, name='registro'),
     path('logout/', views.logout_view, name='logout'),
+    path('cronograma/', views.cronograma, name='cronograma'),
+    path('cronograma/agregar/', views.agregar_entrega, name='agregar_entrega'),
+    path('cronograma/editar/<int:entrega_id>/', views.editar_entrega, name='editar_entrega'),
+    path('cronograma/eliminar/<int:entrega_id>/', views.eliminar_entrega, name='eliminar_entrega'),
+    path('cronograma/calendario/', views.vista_calendario, name='vista_calendario'),
 ]
 
 

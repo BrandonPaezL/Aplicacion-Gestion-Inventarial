@@ -8,6 +8,7 @@ from django.db.models import Count # Para realizar agregaciones como contar
 from django.contrib.auth import authenticate, login, logout # Para autenticar usuarios
 from django.contrib.auth.decorators import login_required # Para proteger vistas con autenticación
 from django.contrib import messages 
+from .models import Entrega
 
 
 
@@ -232,3 +233,50 @@ def registro_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+
+
+# Listar entregas
+def cronograma(request):
+    entregas = Entrega.objects.all().order_by('fecha')
+    return render(request, 'cronograma.html', {'entregas': entregas})
+
+# Agregar entrega
+def agregar_entrega(request):
+    if request.method == 'POST':
+        fecha = request.POST['fecha']
+        elemento = request.POST['elemento']
+        cantidad = request.POST['cantidad']
+        responsable = request.POST['responsable']
+        
+        Entrega.objects.create(
+            fecha=fecha,
+            elemento=elemento,
+            cantidad=cantidad,
+            responsable=responsable
+        )
+        return redirect('cronograma')
+    return render(request, 'cronograma.html')
+
+# Editar entrega
+def editar_entrega(request, entrega_id):
+    entrega = get_object_or_404(Entrega, id=entrega_id)
+    if request.method == 'POST':
+        entrega.fecha = request.POST['fecha']
+        entrega.elemento = request.POST['elemento']
+        entrega.cantidad = request.POST['cantidad']
+        entrega.responsable = request.POST['responsable']
+        entrega.save()
+        return redirect('cronograma')
+    return render(request, 'editar_entrega.html', {'entrega': entrega})
+
+# Eliminar entrega
+def eliminar_entrega(request, entrega_id):
+    entrega = get_object_or_404(Entrega, id=entrega_id)
+    entrega.delete()
+    return redirect('cronograma')
+
+def vista_calendario(request):
+    entregas = Entrega.objects.all()
+    return render(request, 'calendario.html', {'entregas': entregas})

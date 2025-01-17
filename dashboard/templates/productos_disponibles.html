@@ -8,119 +8,187 @@
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'Dashboard/styles.css' %}">
+    <style>
+        /* Estilos mejorados */
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 15px;
+        }
+        .table thead th {
+            background-color: #34495e;
+            color: #ffffff;
+        }
+        .low-stock {
+            background-color: #fff3cd; /* Amarillo claro */
+        }
+        .no-stock {
+            background-color: #f8d7da; /* Rojo claro */
+        }
+        .in-stock {
+            background-color: #d4edda; /* Verde claro */
+        }
+        .btn {
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border: none;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+            border: none;
+        }
+        .btn-primary:hover, .btn-danger:hover {
+            opacity: 0.9;
+        }
+        .search-bar input {
+            border: 2px solid #3498db;
+            border-radius: 20px;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+        }
+        .table {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .content {
+            overflow-x: auto;
+        }
+    </style>
 </head>
+
 <body>
-        <!-- Barra lateral con opciones de navegación -->
-        <div class="sidebar">
-            <div class="user-profile text-center">
-                <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
-                <h5>{{ user.username }}</h5>
-                <p>Ilustre Municipalidad de La Granja</p>
-            </div>
-
-            <!-- Grupo 1: Opciones principales -->
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'lista_inventario' %}">
-                        <i class="fas fa-boxes"></i> Inventario
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'reportes' %}">
-                        <i class="fas fa-chart-line"></i> Reportes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'alertas' %}">
-                        <i class="fas fa-exclamation-triangle"></i> Alertas
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Separador -->
-            <hr class="text-light">
-
-            <!-- Grupo 2: Gestión de contactos -->
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'entrega_elementos' %}">
-                        <i class="fas fa-truck"></i> Entrega de elementos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-bell"></i> Notificaciones <span class="badge bg-danger">01</span>
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Separador -->
-            <hr class="text-light">
-
-            <!-- Grupo 3: Configuración -->
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-cogs"></i> Configuración APP
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'audit_log' %}">
-                        <i class="fas fa-chart-pie"></i> Registro de Auditoria
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contacto' %}">
-                        <i class="fas fa-envelope"></i> Contáctanos
-                    </a>
-                </li>
-            </ul>
+    <!-- Barra lateral con opciones de navegación -->
+    <div class="sidebar">
+        <div class="user-profile text-center">
+            <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
+            <h5>{{ user.username }}</h5>
+            <p>Ilustre Municipalidad de La Granja</p>
         </div>
-        
-        <!-- Contenido principal de Productos Disponibles -->
-        <div class="content">
-            <!-- Encabezado con barra de búsqueda y fecha/hora -->
-            <div class="header d-flex justify-content-between align-items-center flex-wrap">
-                <div class="search-bar mb-2 mb-md-0">
-                    <input placeholder="Buscar producto aquí..." type="text"/>
-                </div>
-            </div>
-            
-            <!-- Título de la sección -->
-            <div class="d-flex justify-content-between align-items-center mt-4">
-                <h2>Productos Disponibles</h2>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                    <i class="fas fa-plus"></i> Agregar Producto
+
+        <!-- Grupo 1: Opciones principales -->
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'index' %}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lista_inventario' %}">
+                    <i class="fas fa-boxes"></i> Inventario
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cronograma' %}">
+                    <i class="fas fa-calendar-alt"></i> Cronograma
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'reportes' %}">
+                    <i class="fas fa-chart-line"></i> Reportes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'alertas' %}">
+                    <i class="fas fa-exclamation-triangle"></i> Alertas
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Grupo 2: Gestión de contactos -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'entrega_elementos' %}">
+                    <i class="fas fa-truck"></i> Entrega de elementos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-bell"></i> Notificaciones <span class="badge bg-danger">01</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Grupo 3: Configuración -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cogs"></i> Configuración APP
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'audit_log' %}">
+                    <i class="fas fa-chart-pie"></i> Registro de Auditoria
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contacto' %}">
+                    <i class="fas fa-envelope"></i> Contáctanos
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Botón de Cerrar Sesión -->
+        <div class="text-center mt-4">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                 </button>
+            </form>
+        </div>
+    </div>
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="header d-flex justify-content-between align-items-center flex-wrap">
+            <div class="search-bar mb-2 mb-md-0">
+                <input placeholder="Buscar producto aquí..." type="text"/>
             </div>
-            <p>Lista completa de productos disponibles en el inventario.</p>
-            
-            <!-- Tabla de Productos Disponibles -->
-            <table class="table table-striped mt-4">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Fecha de Caducidad</th>
-                        <th>Categoría</th>
-                        <th>Proveedor</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in productos %}
-                    <tr>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.cantidad }}</td>
-                        <td>{{ producto.fecha_caducidad }}</td>
-                        <td>{{ producto.categoria }}</td>
-                        <td>{{ producto.proveedor }}</td>
-                        <td>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h2>Productos Disponibles</h2>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                <i class="fas fa-plus"></i> Agregar Producto
+            </button>
+        </div>
+        <p>Lista completa de productos disponibles en el inventario.</p>
+
+        <!-- Tabla de Productos Disponibles -->
+        <table class="table table-striped mt-4">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Fecha de Caducidad</th>
+                    <th>Categoría</th>
+                    <th>Proveedor</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr class="{% if producto.cantidad == 0 %} no-stock {% elif producto.cantidad < 10 %} low-stock {% else %} in-stock {% endif %}">
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.cantidad }}</td>
+                    <td>{{ producto.fecha_caducidad }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>{{ producto.proveedor }}</td>
+                    <td>
                         <!-- Botón Editar -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editProductModal{{ producto.id }}">
                             <i class="fas fa-edit"></i> Editar
@@ -131,17 +199,18 @@
                         onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
                             <i class="fas fa-trash"></i> Eliminar
                         </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="text-center">No hay productos disponibles.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No hay productos disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+
+    <!-- Modal para agregar producto -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -179,45 +248,46 @@
         </div>
     </div>
 
+    <!-- Modal para editar producto -->
     {% for producto in productos %}
-        <div class="modal fade" id="editProductModal{{ producto.id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ producto.id }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editProductModalLabel{{ producto.id }}">Editar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="post" action="{% url 'editar_producto' producto.id %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="productName{{ producto.id }}" class="form-label">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="productName{{ producto.id }}" name="nombre" value="{{ producto.nombre }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="quantity{{ producto.id }}" class="form-label">Cantidad</label>
-                                <input type="number" class="form-control" id="quantity{{ producto.id }}" name="cantidad" value="{{ producto.cantidad }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="expiryDate{{ producto.id }}" class="form-label">Fecha de Caducidad</label>
-                                <input type="date" class="form-control" id="expiryDate{{ producto.id }}" name="fecha_caducidad" value="{{ producto.fecha_caducidad }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="category{{ producto.id }}" class="form-label">Categoría</label>
-                                <input type="text" class="form-control" id="category{{ producto.id }}" name="categoria" value="{{ producto.categoria }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="supplier{{ producto.id }}" class="form-label">Proveedor</label>
-                                <input type="text" class="form-control" id="supplier{{ producto.id }}" name="proveedor" value="{{ producto.proveedor }}" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                        </form>
-                    </div>
+    <div class="modal fade" id="editProductModal{{ producto.id }}" tabindex="-1" aria-labelledby="editProductModalLabel{{ producto.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel{{ producto.id }}">Editar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'editar_producto' producto.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="productName{{ producto.id }}" class="form-label">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="productName{{ producto.id }}" name="nombre" value="{{ producto.nombre }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantity{{ producto.id }}" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" id="quantity{{ producto.id }}" name="cantidad" value="{{ producto.cantidad }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expiryDate{{ producto.id }}" class="form-label">Fecha de Caducidad</label>
+                            <input type="date" class="form-control" id="expiryDate{{ producto.id }}" name="fecha_caducidad" value="{{ producto.fecha_caducidad }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category{{ producto.id }}" class="form-label">Categoría</label>
+                            <input type="text" class="form-control" id="category{{ producto.id }}" name="categoria" value="{{ producto.categoria }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="supplier{{ producto.id }}" class="form-label">Proveedor</label>
+                            <input type="text" class="form-control" id="supplier{{ producto.id }}" name="proveedor" value="{{ producto.proveedor }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     {% endfor %}
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

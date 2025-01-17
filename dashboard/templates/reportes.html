@@ -9,135 +9,160 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
-        <!-- Barra lateral con opciones de navegación -->
-        <div class="sidebar">
-            <div class="user-profile text-center">
-                <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
-                <h5>{{ user.username }}</h5>
-                <p>Ilustre Municipalidad de La Granja</p>
-            </div>
-
-            <!-- Grupo 1: Opciones principales -->
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lista_inventario' %}">
-                        <i class="fas fa-boxes"></i> Inventario
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'reportes' %}">
-                        <i class="fas fa-chart-line"></i> Reportes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'alertas' %}">
-                        <i class="fas fa-exclamation-triangle"></i> Alertas
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Separador -->
-            <hr class="text-light">
-
-            <!-- Grupo 2: Gestión de contactos -->
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'entrega_elementos' %}">
-                        <i class="fas fa-truck"></i> Entrega de elementos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-bell"></i> Notificaciones <span class="badge bg-danger">01</span>
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Separador -->
-            <hr class="text-light">
-
-            <!-- Grupo 3: Configuración -->
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-cogs"></i> Configuración APP
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'audit_log' %}">
-                        <i class="fas fa-chart-pie"></i> Registro de Auditoria
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contacto' %}">
-                        <i class="fas fa-envelope"></i> Contáctanos
-                    </a>
-                </li>
-            </ul>
+    <!-- Barra lateral con opciones de navegación -->
+    <div class="sidebar">
+        <div class="user-profile text-center">
+            <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
+            <h5>{{ user.username }}</h5>
+            <p>Ilustre Municipalidad de La Granja</p>
         </div>
 
+        <!-- Grupo 1: Opciones principales -->
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'index' %}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lista_inventario' %}">
+                    <i class="fas fa-boxes"></i> Inventario
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cronograma' %}">
+                    <i class="fas fa-calendar-alt"></i> Cronograma
+                </a>
+            </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'reportes' %}">
+                    <i class="fas fa-chart-line"></i> Reportes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'alertas' %}">
+                    <i class="fas fa-exclamation-triangle"></i> Alertas
+                </a>
+            </li>
+        </ul>
 
-        <!-- Contenido principal -->
-        <div class="content p-4 w-100">
-            <h2 class="mb-4">Reportes de Inventario</h2>
+        <!-- Separador -->
+        <hr class="text-light">
 
-            <!-- Filtro por categoría -->
-            <form method="get" class="mb-4">
-                <div class="row">
-                    <div class="col-md-4">
-                        <select name="categoria" class="form-select">
-                            <option value="">-- Selecciona una categoría --</option>
-                            {% for categoria in categorias %}
-                                <option value="{{ categoria }}" {% if categoria == categoria_seleccionada %}selected{% endif %}>
-                                    {{ categoria }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filtrar</button>
-                    </div>
-                </div>
+        <!-- Grupo 2: Gestión de contactos -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'entrega_elementos' %}">
+                    <i class="fas fa-truck"></i> Entrega de elementos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-bell"></i> Notificaciones <span class="badge bg-danger">01</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Grupo 3: Configuración -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cogs"></i> Configuración APP
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'audit_log' %}">
+                    <i class="fas fa-chart-pie"></i> Registro de Auditoria
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contacto' %}">
+                    <i class="fas fa-envelope"></i> Contáctanos
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Botón de Cerrar Sesión -->
+        <div class="text-center mt-4">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
             </form>
+        </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="container-fluid">
+            <!-- Encabezado principal -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Reportes de Inventario</h2>
+                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#graficoModal">
+                    <i class="fas fa-chart-bar"></i> Ver Gráfico
+                </button>
+            </div>
 
             <!-- Tabla de productos -->
-            <h4>Productos</h4>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Categoría</th>
-                        <th>Fecha de Caducidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for producto in productos %}
-                        <tr>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.cantidad }}</td>
-                            <td>{{ producto.categoria }}</td>
-                            <td>{{ producto.fecha_caducidad }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center">No hay productos para mostrar.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Productos en Inventario</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-container" style="max-height: calc(100vh - 200px); overflow-y: auto; width: 100%;">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Cantidad</th>
+                                    <th>Categoría</th>
+                                    <th>Fecha de Caducidad</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for producto in productos %}
+                                    <tr>
+                                        <td>{{ producto.nombre }}</td>
+                                        <td>{{ producto.cantidad }}</td>
+                                        <td>{{ producto.categoria }}</td>
+                                        <td>{{ producto.fecha_caducidad }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">No hay productos para mostrar.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <!-- Gráfico de productos por categoría -->
-            <h4 class="mt-5">Gráfico de Productos por Categoría</h4>
-            <canvas id="chartCategorias" width="400" height="200"></canvas>
+    <!-- Modal para el gráfico -->
+    <div class="modal fade" id="graficoModal" tabindex="-1" aria-labelledby="graficoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="graficoModalLabel">Gráfico de Productos por Categoría</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <canvas id="chartCategorias" width="400" height="200"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -148,8 +173,18 @@
             datasets: [{
                 label: 'Cantidad de Productos',
                 data: [{% for item in datos_grafico %}{{ item.total }},{% endfor %}],
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(231, 76, 60, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(231, 76, 60, 1)'
+                ],
                 borderWidth: 1
             }]
         };

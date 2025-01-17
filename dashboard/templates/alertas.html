@@ -9,31 +9,70 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
     <style>
-        .card-header i {
-            margin-right: 10px;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
         }
+
+        .content {
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        .alerts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 20px;
+        }
+
         .alert-card {
-            flex: 1 1 calc(33.333% - 1rem);
-            max-width: calc(33.333% - 1rem);
-            margin: 0.5rem;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .alert-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
-        .alerts-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-        }
-        .alert-title {
+
+        .alert-card .card-header {
             font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 0.5rem;
-            text-align: center; /* Centrar los títulos */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+
+        .alert-card .card-header i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .alert-card .card-body {
+            padding: 15px;
+        }
+
+        .alert-card.bg-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .alert-card.bg-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
         .no-alerts {
             text-align: center;
             font-size: 1.2rem;
@@ -42,132 +81,140 @@
     </style>
 </head>
 <body>
-        <!-- Barra lateral con opciones de navegación -->
-        <div class="sidebar">
-            <div class="user-profile text-center">
-                <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
-                <h5>{{ user.username }}</h5>
-                <p>Ilustre Municipalidad de La Granja</p>
-            </div>
-
-            <!-- Grupo 1: Opciones principales -->
-            <ul class="nav flex-column mt-4">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'lista_inventario' %}">
-                        <i class="fas fa-boxes"></i> Inventario
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'reportes' %}">
-                        <i class="fas fa-chart-line"></i> Reportes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'alertas' %}">
-                        <i class="fas fa-exclamation-triangle"></i> Alertas
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Separador -->
-            <hr class="text-light">
-
-            <!-- Grupo 2: Gestión de contactos -->
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'entrega_elementos' %}">
-                        <i class="fas fa-truck"></i> Entrega de elementos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-bell"></i> Notificaciones <span class="badge bg-danger">01</span>
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Separador -->
-            <hr class="text-light">
-
-            <!-- Grupo 3: Configuración -->
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-cogs"></i> Configuración APP
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'audit_log' %}">
-                        <i class="fas fa-chart-pie"></i> Registro de Auditoria
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'contacto' %}">
-                        <i class="fas fa-envelope"></i> Contáctanos
-                    </a>
-                </li>
-            </ul>
+    <!-- Barra lateral con opciones de navegación -->
+    <div class="sidebar">
+        <div class="user-profile text-center">
+            <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
+            <h5>{{ user.username }}</h5>
+            <p>Ilustre Municipalidad de La Granja</p>
         </div>
 
+        <!-- Grupo 1: Opciones principales -->
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'index' %}">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'lista_inventario' %}">
+                    <i class="fas fa-boxes"></i> Inventario
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cronograma' %}">
+                    <i class="fas fa-calendar-alt"></i> Cronograma
+                </a>
+            </li>
 
-        <!-- Contenido principal -->
-        <div class="content p-4 w-100">
-            <!-- Encabezado -->
-            <div class="header d-flex justify-content-between align-items-center flex-wrap mb-4">
-                <h2>Alertas de Inventario</h2>
-            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'reportes' %}">
+                    <i class="fas fa-chart-line"></i> Reportes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'alertas' %}">
+                    <i class="fas fa-exclamation-triangle"></i> Alertas
+                </a>
+            </li>
+        </ul>
 
-            <!-- Sección de Alertas -->
-            <div class="mb-5">
-                <h4 class="alert-title">Productos Próximos a Caducar</h4>
-                <div class="alerts-container">
-                    {% for producto in productos_caducar %}
-                        <div class="card alert-card bg-warning text-white">
-                            <div class="card-header"><i class="fas fa-exclamation-triangle"></i>{{ producto.nombre }}</div>
-                            <div class="card-body">
-                                <p class="card-text">Fecha de caducidad: {{ producto.fecha_caducidad }}</p>
-                                <p class="card-text">Cantidad: {{ producto.cantidad }}</p>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <p class="no-alerts">No hay productos próximos a caducar.</p>
-                    {% endfor %}
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Grupo 2: Gestión de contactos -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'entrega_elementos' %}">
+                    <i class="fas fa-truck"></i> Entrega de elementos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-bell"></i> Notificaciones <span class="badge bg-danger">01</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Grupo 3: Configuración -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-cogs"></i> Configuración APP
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'audit_log' %}">
+                    <i class="fas fa-chart-pie"></i> Registro de Auditoria
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'contacto' %}">
+                    <i class="fas fa-envelope"></i> Contáctanos
+                </a>
+            </li>
+        </ul>
+
+        <!-- Separador -->
+        <hr class="text-light">
+
+        <!-- Botón de Cerrar Sesión -->
+        <div class="text-center mt-4">
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- Contenido principal -->
+    <div class="content">
+        <h2>Alertas de Inventario</h2>
+
+        <!-- Productos próximos a caducar -->
+        <div>
+            <h4 class="section-title">Productos Próximos a Caducar</h4>
+            <div class="alerts-container">
+                {% for producto in productos_caducar %}
+                <div class="card alert-card bg-warning">
+                    <div class="card-header">
+                        <span><i class="fas fa-exclamation-triangle"></i>{{ producto.nombre }}</span>
+                        <span>📅 {{ producto.fecha_caducidad }}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Cantidad:</strong> {{ producto.cantidad }}</p>
+                    </div>
                 </div>
+                {% empty %}
+                <p class="no-alerts">No hay productos próximos a caducar.</p>
+                {% endfor %}
             </div>
+        </div>
 
-            <div>
-                <h4 class="alert-title">Productos con Stock Bajo</h4>
-                <div class="alerts-container">
-                    {% for producto in productos_stock_bajo %}
-                        <div class="card alert-card bg-danger text-white">
-                            <div class="card-header"><i class="fas fa-exclamation-circle"></i>{{ producto.nombre }}</div>
-                            <div class="card-body">
-                                <p class="card-text">Cantidad disponible: {{ producto.cantidad }}</p>
-                                <p class="card-text">Fecha de caducidad: {{ producto.fecha_caducidad }}</p>
-                            </div>
-                        </div>
-                    {% empty %}
-                        <p class="no-alerts">No hay productos con stock bajo.</p>
-                    {% endfor %}
+        <!-- Productos con stock bajo -->
+        <div>
+            <h4 class="section-title">Productos con Stock Bajo</h4>
+            <div class="alerts-container">
+                {% for producto in productos_stock_bajo %}
+                <div class="card alert-card bg-danger">
+                    <div class="card-header">
+                        <span><i class="fas fa-exclamation-circle"></i>{{ producto.nombre }}</span>
+                        <span>📦 {{ producto.cantidad }}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Fecha de caducidad:</strong> {{ producto.fecha_caducidad }}</p>
+                    </div>
                 </div>
+                {% empty %}
+                <p class="no-alerts">No hay productos con stock bajo.</p>
+                {% endfor %}
             </div>
         </div>
     </div>
-
-    <script>
-        function updateDateTime() {
-            const date = new Date();
-            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            document.getElementById('datetime').textContent = date.toLocaleDateString('es-ES', options);
-        }
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

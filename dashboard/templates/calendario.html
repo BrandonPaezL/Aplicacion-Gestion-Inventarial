@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Entregas</title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/index.global.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        #calendar {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-details {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-details ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Calendario de Entregas</h2>
+        <div id="calendar"></div>
+        <div id="eventDetails" class="event-details" style="display: none;">
+            <h4>Entregas para el día seleccionado:</h4>
+            <ul id="eventList">
+                <!-- Lista de entregas por día -->
+            </ul>
+        </div>
+        <a href="{% url 'cronograma' %}" class="btn btn-secondary mt-3">
+            <i class="fas fa-arrow-left"></i> Volver al Cronograma
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+            const eventDetails = document.getElementById('eventDetails');
+            const eventList = document.getElementById('eventList');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es', // Idioma español
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth'
+                },
+                events: [
+                    {% for entrega in entregas %}
+                    {
+                        title: '{{ entrega.elemento }} ({{ entrega.cantidad }})',
+                        start: '{{ entrega.fecha }}',
+                        description: 'Responsable: {{ entrega.responsable }}'
+                    },
+                    {% endfor %}
+                ],
+                dateClick: function(info) {
+                    const selectedDate = info.dateStr;
+                    const eventsForDate = calendar.getEvents().filter(event => event.startStr === selectedDate);
+
+                    if (eventsForDate.length > 0) {
+                        eventList.innerHTML = ''; // Limpiar lista previa
+                        eventsForDate.forEach(event => {
+                            const li = document.createElement('li');
+                            li.textContent = `${event.title} - ${event.extendedProps.description}`;
+                            eventList.appendChild(li);
+                        });
+                        eventDetails.style.display = 'block';
+                    } else {
+                        eventList.innerHTML = '<li>No hay entregas para este día.</li>';
+                        eventDetails.style.display = 'block';
+                    }
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

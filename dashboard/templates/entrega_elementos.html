@@ -22,7 +22,7 @@
         <!-- Grupo 1: Opciones principales -->
         <ul class="nav flex-column mt-4">
             <li class="nav-item">
-                <a class="nav-link active" href="{% url 'index' %}">
+                <a class="nav-link" href="{% url 'index' %}">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
             </li>
@@ -55,7 +55,7 @@
         <!-- Grupo 2: Gestión de contactos -->
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'entrega_elementos' %}">
+                <a class="nav-link active" href="{% url 'entrega_elementos' %}">
                     <i class="fas fa-truck"></i> Entrega de elementos
                 </a>
             </li>
@@ -104,33 +104,44 @@
 
         <!-- Contenido principal de la página -->
         <div class="content">
-            <!-- Encabezado con búsqueda, idioma y hora -->
-            <div class="header d-flex justify-content-between align-items-center flex-wrap">
-                <!-- Barra de búsqueda -->
-                <div class="search-bar mb-2 mb-md-0">
-                    <input placeholder="Search for anything here.." type="text"/>
-                </div>
+            <!-- Encabezado con búsqueda -->
+            <div class="header d-flex justify-content-between align-items-center flex-wrap mt-4">
+                <h2 class="mb-4">Entrega de Elementos</h2> <!-- Nuevo título agregado -->
             </div>
             <!-- Formulario de entrega de elementos -->
-            <div class="container mt-4">
-                <h2>Entrega de Elementos</h2>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.producto.label_tag }}
-                        {{ form.producto }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.cantidad.label_tag }}
-                        {{ form.cantidad }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.destinatario.label_tag }}
-                        {{ form.destinatario }}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Entregar</button>
-                </form>
-            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.producto.label_tag }}
+                    {{ form.producto }}
+                    {% if form.producto.errors %}
+                        <div class="text-danger">{{ form.producto.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.cantidad.label_tag }}
+                    {{ form.cantidad }}
+                    {% if form.cantidad.errors %}
+                        <div class="text-danger">{{ form.cantidad.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.destinatario.label_tag }}
+                    {{ form.destinatario }}
+                    {% if form.destinatario.errors %}
+                        <div class="text-danger">{{ form.destinatario.errors }}</div>
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Entregar</button>
+            </form>
+            
+            {% if messages %}
+                <ul class="mt-3">
+                    {% for message in messages %}
+                        <li class="text-{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
 

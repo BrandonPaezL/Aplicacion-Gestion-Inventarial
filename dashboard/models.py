@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.timezone import now
 
-# Modelo de Producto
 class Producto(models.Model):
     nombre = models.CharField(max_length=100)
     cantidad = models.PositiveIntegerField()
@@ -88,11 +88,11 @@ class Presupuesto(models.Model):
 
 class AuditLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    action = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.user} - {self.action} - {self.date}"
+        return f"{self.user.username} - {self.action} - {self.date}"
 
 
 class Entrega(models.Model):

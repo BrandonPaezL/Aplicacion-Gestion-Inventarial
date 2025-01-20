@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audit Log</title>
+    <title>Registro de Auditoría</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
@@ -21,7 +21,7 @@
         <!-- Grupo 1: Opciones principales -->
         <ul class="nav flex-column mt-4">
             <li class="nav-item">
-                <a class="nav-link active" href="{% url 'index' %}">
+                <a class="nav-link" href="{% url 'index' %}">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
             </li>
@@ -76,7 +76,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'audit_log' %}">
+                <a class="nav-link active" href="{% url 'audit_log' %}">
                     <i class="fas fa-chart-pie"></i> Registro de Auditoria
                 </a>
             </li>
@@ -102,56 +102,41 @@
     </div>
 
 
-        <!-- Main content -->
-        <div class="content">
-            <div class="header d-flex justify-content-between align-items-center flex-wrap">
-                <div class="search-bar mb-2 mb-md-0">
-                    <input type="text" placeholder="Search for anything here..">
-                </div>
-            </div>
-
-            <!-- Audit Log Table -->
-            <div class="dashboard-cards mt-4">
-                <div class="card p-4">
-                    <h2 class="card-title">Audit Log</h2>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Date</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for log in audit_logs %}
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="container mt-5">
+            <h2 class="text-center mb-4">Registro de Auditoría</h2>
+            <div class="card shadow-sm p-4">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Fecha</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in audit_logs %}
                                 <tr>
                                     <td>{{ log.id }}</td>
-                                    <td>{{ log.user }}</td>
-                                    <td>{{ log.date }}</td>
+                                    <td>{{ log.user.username }}</td>
+                                    <td>{{ log.date|date:"d/m/Y H:i" }}</td>
                                     <td>{{ log.action }}</td>
                                 </tr>
-                                {% empty %}
+                            {% empty %}
                                 <tr>
-                                    <td colspan="4" class="text-center">No audit logs available</td>
+                                    <td colspan="4" class="text-center">No hay registros disponibles</td>
                                 </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function updateDateTime() {
-            const date = new Date();
-            const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            document.getElementById('datetime').textContent = date.toLocaleDateString('es-ES', options);
-        }
-        setInterval(updateDateTime, 1000);
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

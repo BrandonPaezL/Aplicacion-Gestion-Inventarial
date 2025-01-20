@@ -10,7 +10,8 @@ from django.contrib.auth.decorators import login_required # Para proteger vistas
 from django.contrib import messages 
 from .models import Entrega
 
-
+def registrar_auditoria(user, action):
+    AuditLog.objects.create(user=user, action=action, date=timezone.now())
 
 # Vista principal
 @login_required
@@ -22,12 +23,14 @@ def index(request):
 def lista_inventario(request):
     productos = Producto.objects.all()
     return render(request, 'inventario.html', {'productos': productos})
+
 @login_required
 def agregar_producto(request):
     if request.method == 'POST':
         form = ProductoForm(request.POST)
         if form.is_valid():
-            form.save()
+            producto = form.save()
+            registrar_auditoria(request.user, f"Agregó el producto {producto.nombre}")
             return redirect('lista_inventario')
     else:
         form = ProductoForm()
@@ -40,6 +43,7 @@ def editar_producto(request, producto_id):
         form = ProductoForm(request.POST, instance=producto)
         if form.is_valid():
             form.save()
+            registrar_auditoria(request.user, f"Editó el producto {producto.nombre}")
             return redirect('lista_productos')
     else:
         form = ProductoForm(instance=producto)
@@ -48,6 +52,7 @@ def editar_producto(request, producto_id):
 @login_required
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, pk=producto_id)
+    registrar_auditoria(request.user, f"Eliminó el producto {producto.nombre}")
     producto.delete()
     return redirect('lista_inventario')
 
@@ -73,7 +78,8 @@ def crear_grupo(request):
     if request.method == 'POST':
         form = GrupoForm(request.POST)
         if form.is_valid():
-            form.save()
+            grupo = form.save()
+            registrar_auditoria(request.user, f"Creó el grupo {grupo.nombre}")
             return redirect('grupos')
     else:
         form = GrupoForm()
@@ -82,8 +88,12 @@ def crear_grupo(request):
 # Log de auditoría
 @login_required
 def audit_log_view(request):
-    audit_logs = AuditLog.objects.all().order_by('-date')
-    return render(request, 'audit_log.html', {'audit_logs': audit_logs})
+    """
+    Vista para mostrar el registro de auditoría.
+    """
+    audit_logs = AuditLog.objects.all().order_by('-date')  # Ordena por fecha descendente
+    context = {'audit_logs': audit_logs}
+    return render(request, 'audit_log.html', context)
 
 # Presupuesto
 @login_required
@@ -193,13 +203,16 @@ def entrega_elementos(request):
                 producto.save()
                 venta.fecha_venta = timezone.now()
                 venta.save()
-                return redirect('entrega_elementos')
+                registrar_auditoria(request.user, f"Realizó una entrega del producto {producto.nombre}")
+                messages.success(request, "Entrega realizada exitosamente.")
+                return redirect('entrega_elementos')  # Redirige para evitar reenvío del formulario
             else:
                 form.add_error('cantidad', 'Cantidad insuficiente en inventario')
+        else:
+            messages.error(request, "Formulario inválido. Revisa los datos ingresados.")
     else:
         form = EntregaElementosForm()
     return render(request, 'entrega_elementos.html', {'form': form})
-
 
 
 def login_view(request):
@@ -211,6 +224,7 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                registrar_auditoria(user, "Inició sesión")
                 return redirect('index')
             else:
                 form.add_error(None, 'Nombre de usuario o contraseña incorrectos')
@@ -222,8 +236,8 @@ def registro_view(request):
     if request.method == 'POST':
         form = RegistroForm(request.POST)
         if form.is_valid():
-            form.save()  # Guarda el usuario
-            # Agrega un mensaje para mostrar en la vista de login
+            usuario = form.save()  # Guarda el usuario
+            registrar_auditoria(usuario, "Registró un nuevo usuario")
             messages.success(request, 'Usuario registrado satisfactoriamente.')
             return redirect('login')  # Redirige a la vista de login
     else:
@@ -231,7 +245,9 @@ def registro_view(request):
     return render(request, 'registro.html', {'form': form})
 
 def logout_view(request):
+    user = request.user
     logout(request)
+    registrar_auditoria(user, "Cerró sesión")
     return redirect('login')
 
 
@@ -256,6 +272,7 @@ def agregar_entrega(request):
             cantidad=cantidad,
             responsable=responsable
         )
+        registrar_auditoria(request.user, f"Agregó una entrega de {elemento}")
         return redirect('cronograma')
     return render(request, 'cronograma.html')
 
@@ -268,15 +285,18 @@ def editar_entrega(request, entrega_id):
         entrega.cantidad = request.POST['cantidad']
         entrega.responsable = request.POST['responsable']
         entrega.save()
+        registrar_auditoria(request.user, f"Editó la entrega de {entrega.elemento}")
         return redirect('cronograma')
     return render(request, 'editar_entrega.html', {'entrega': entrega})
 
 # Eliminar entrega
 def eliminar_entrega(request, entrega_id):
     entrega = get_object_or_404(Entrega, id=entrega_id)
+    registrar_auditoria(request.user, f"Eliminó la entrega de {entrega.elemento}")
     entrega.delete()
     return redirect('cronograma')
 
 def vista_calendario(request):
     entregas = Entrega.objects.all()
     return render(request, 'calendario.html', {'entregas': entregas})
+

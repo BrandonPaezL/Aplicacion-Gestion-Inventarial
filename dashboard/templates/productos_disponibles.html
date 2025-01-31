@@ -64,39 +64,23 @@
 <body>
     <!-- Barra lateral con opciones de navegación -->
     <div class="sidebar">
-        <div class="user-profile text-center">
-            <img src="{% static 'dashboard/img/login.png' %}" class="rounded-circle" width="100" height="100">
-            <h5>{{ user.username }}</h5>
-            <p>Ilustre Municipalidad de La Granja</p>
-        </div>
-
+        <div class="logo-container">
+            <img src="{% static 'dashboard/img/Logo_blanco_sin_sombra.png' %}" alt="Logo">
+        </div>   
         <!-- Grupo 1: Opciones principales -->
         <ul class="nav flex-column mt-4">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuDashboard" role="button" aria-expanded="false" aria-controls="menuDashboard">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
+                    <i class="fas fa-chevron-down"></i>
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{% url 'lista_inventario' %}">
-                    <i class="fas fa-boxes"></i> Inventario
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cronograma' %}">
-                    <i class="fas fa-calendar-alt"></i> Cronograma
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'reportes' %}">
-                    <i class="fas fa-chart-line"></i> Reportes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'alertas' %}">
-                    <i class="fas fa-exclamation-triangle"></i> Alertas
-                </a>
+                <ul class="collapse list-unstyled ms-3" id="menuDashboard">
+                    <li><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a class="nav-link" href="{% url 'lista_productos' %}"><i class="fas fa-boxes"></i> Inventario</a></li>
+                    <li><a class="nav-link" href="{% url 'cronograma' %}"><i class="fas fa-calendar-alt"></i> Cronograma</a></li>
+                    <li><a class="nav-link" href="{% url 'reportes' %}"><i class="fas fa-chart-line"></i> Reportes</a></li>
+                    <li><a class="nav-link" href="{% url 'alertas' %}"><i class="fas fa-exclamation-triangle"></i> Alertas</a></li>
+                </ul>
             </li>
         </ul>
 
@@ -141,24 +125,32 @@
 
         <!-- Separador -->
         <hr class="text-light">
-
-        <!-- Botón de Cerrar Sesión -->
-        <div class="text-center mt-4">
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger w-100">
-                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                </button>
-            </form>
-        </div>
     </div>
-    <!-- Contenido principal -->
-    <div class="content">
-        <div class="header d-flex justify-content-between align-items-center flex-wrap">
-            <div class="search-bar mb-2 mb-md-0">
-                <input placeholder="Buscar producto aquí..." type="text"/>
+
+        <!-- Contenido principal de la página -->
+        <div class="content">
+            <!-- Header con barra de búsqueda y perfil -->
+            <div class="header-container">
+                <!-- Barra de búsqueda -->
+                <div class="search-bar">
+                    <input class="form-control" placeholder="Busca lo que necesites.." type="text"/>
+                </div>
+
+                <!-- Perfil de usuario con menú desplegable al hacer click -->
+                <div class="user-profile dropdown">
+                    <a href="#" class="d-flex align-items-center dropdown-toggle" id="userDropdown" role="button">
+                        <img src="{% static 'dashboard/img/login.png' %}" class="user-profile-img">
+                        <span class="user-name">{{ user.username }}</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end animated-dropdown" id="userDropdownMenu">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Ver Perfil</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item logout" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
+    <!-- Contenido principal -->
 
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h2>Productos Disponibles</h2>
@@ -208,7 +200,7 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
+
 
     <!-- Modal para agregar producto -->
     <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
@@ -287,7 +279,27 @@
         </div>
     </div>
     {% endfor %}
+    <!-- Script para manejar login, logout y actualizar fecha/hora -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userDropdown = document.getElementById("userDropdown");
+            const userDropdownMenu = document.getElementById("userDropdownMenu");
 
+        userDropdown.addEventListener("click", function (event) {
+            event.preventDefault();
+            userDropdownMenu.classList.toggle("show");
+        });
+
+        // Cierra el menú si se hace clic fuera de él
+        document.addEventListener("click", function (event) {
+            if (!userDropdown.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                userDropdownMenu.classList.remove("show");
+            }
+        });
+        });
+ 
+
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

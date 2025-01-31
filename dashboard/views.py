@@ -9,6 +9,9 @@ from django.contrib.auth import authenticate, login, logout # Para autenticar us
 from django.contrib.auth.decorators import login_required # Para proteger vistas con autenticación
 from django.contrib import messages 
 from .models import Entrega
+from django.http import JsonResponse
+from django.shortcuts import reverse
+from .models import Producto  # Modelo de productos
 
 def registrar_auditoria(user, action):
     AuditLog.objects.create(user=user, action=action, date=timezone.now())
@@ -16,7 +19,61 @@ def registrar_auditoria(user, action):
 # Vista principal
 @login_required
 def index(request):
-    return render(request, 'index.html')
+    # Obtener la cantidad de productos en inventario
+    cantidad_inventario = Producto.objects.count()
+
+    # Obtener la última entrega
+    ultima_entrega = Entrega.objects.order_by('-fecha').first()  # Última entrega realizada
+
+    # Obtener la próxima entrega
+    proxima_entrega = Entrega.objects.filter(fecha__gte=timezone.now().date()).order_by('fecha').first()
+
+    context = {
+        'cantidad_inventario': cantidad_inventario,
+        'ultima_entrega': ultima_entrega,
+        'proxima_entrega': proxima_entrega,
+    }
+
+    return render(request, 'index.html', context)
+
+@login_required
+def buscar(request):
+    query = request.GET.get('q', '')  # Obtiene el término de búsqueda
+    resultados_productos = Producto.objects.filter(nombre__icontains=query)  # Busca productos
+
+    context = {
+        'query': query,
+        'resultados_productos': resultados_productos,
+    }
+    return render(request, 'buscar_resultados.html', context)
+
+
+@login_required
+def buscar_sugerencias(request):
+    query = request.GET.get('q', '').lower()
+    resultados = []
+
+    if query:
+        # Búsqueda en productos
+        productos = Producto.objects.filter(nombre__icontains=query)[:5]
+        for producto in productos:
+            resultados.append({
+                "nombre": producto.nombre,
+                "url": reverse("detalle_producto", args=[producto.id])
+            })
+
+        # Búsqueda en secciones predefinidas
+        secciones = {
+            "inventario": "/inventario/",
+            "reportes": "/reportes/",
+            "alertas": "/alertas/",
+            "configuracion": "/configuracion/",
+        }
+        for key, url in secciones.items():
+            if query in key:
+                resultados.append({"nombre": key.capitalize(), "url": url})
+
+    return JsonResponse({"resultados": resultados})
 
 # Sección principal de inventario
 @login_required

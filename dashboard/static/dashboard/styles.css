@@ -24,40 +24,43 @@ body {
 }
 
 .sidebar .nav-link.active {
-    background-color: #1abc9c;
+    background-color: #ffffff;
 }
 
 .sidebar .nav-link:hover {
-    background-color: #16a085;
+    background-color: #ffffff;
 }
 
 .sidebar .nav-link i {
     margin-right: 10px;
 }
 
+/* Estiliza el logo en la barra lateral */
+.sidebar .logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0 15px 0; /* Aumenta el espacio superior */
+    height: auto; /* Ajuste dinámico */
+    overflow: hidden;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2); /* Línea separadora opcional */
+}
+
+.sidebar .logo-container img {
+    max-width: 170px; /* Tamaño máximo fijo */
+    height: auto; /* Mantiene la proporción */
+    filter: brightness(0) invert(1); /* Hace que el logo sea más blanco */
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+/* Efecto al pasar el mouse sobre el logo */
+.sidebar .logo-container img:hover {
+    filter: brightness(0) invert(1) contrast(1.2);
+    transform: scale(1.05);
+}
+
+/* Elimina la sección del usuario */
 .sidebar .user-profile {
-    padding: 5px 0;
-    margin: 0;
-    text-align: center;
-}
-
-.sidebar .user-profile img {
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    margin: 0 auto;
-}
-
-.sidebar .user-profile h5 {
-    font-size: 16px; /* Tamaño del texto */
-    margin: 5px 0; /* Reduce el espacio superior e inferior */
-}
-
-.sidebar .user-profile p {
-    font-size: 12px; /* Tamaño del texto */
-    color: #bdc3c7; /* Color gris claro */
-    margin: 0; /* Elimina márgenes adicionales */
-    padding-bottom: 0; /* Asegúrate de que no haya relleno */
+    display: none;
 }
 
 /* Botón de cerrar sesión */
@@ -69,49 +72,177 @@ body {
 
 /* Ajuste del contenido principal con espacio para la barra lateral */
 .content {
-    margin-left: 250px;
-    padding: 10px 20px;
-    flex-grow: 1;
+    margin-left: 250px; /* Asegura que respeta la barra lateral */
+    width: calc(100% - 250px); /* Ajusta el tamaño para evitar espacios en blanco */
+    padding: 20px;
+    min-height: 100vh;
+    overflow-x: hidden; /* Evita desplazamientos no deseados */
+}
+.content h2 {
+    margin-top: 10px; /* Ajusta el encabezado principal */
 }
 
-.content .header {
+
+
+.table-container {
+    max-height: calc(100vh - 200px); /* Ajuste dinámico */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.content .container-fluid {
+    padding: 0 20px; /* Reduce la separación lateral */
+}
+
+/* Estiliza el contenedor del header */
+/* Contenedor de la barra superior */
+.header-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #f9fafb 0%, #eef1f5 100%);
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    margin-bottom: 10px; 
 }
 
-.content .header .search-bar {
-    width: 100%;
-    margin-bottom: 10px;
-}
 
-.content .header .search-bar input {
+.search-bar input {
     width: 100%;
-    padding: 5px 10px;
+    padding: 10px 15px;
+    padding-left: 40px; /* Espacio para el icono */
     border: 1px solid #ced4da;
-    border-radius: 5px;
+    border-radius: 20px;
+    font-size: 14px;
+    background: #ffffff;
+    transition: all 0.3s ease;
 }
 
-.content .header .language,
-.content .header .date-time {
+/* Icono de búsqueda dentro de la barra */
+.search-bar::before {
+    content: "\f002"; /* Código del icono de lupa en FontAwesome */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #7f8c8d;
+}
+
+/* Sección del perfil mejor alineada */
+.user-profile {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    gap: 8px;
+    white-space: nowrap;
 }
 
-.content .header .language i,
-.content .header .date-time i {
-    margin-right: 5px;
+.user-profile .dropdown-menu {
+    top: 100%;
+    right: 0;
+    left: auto;
+}
+/* Imagen de usuario */
+.user-profile-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
 }
 
-.content .dashboard-cards {
+/* Nombre de usuario */
+.user-profile .user-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Hover para el perfil */
+.user-profile:hover {
+    opacity: 1;
+}
+
+.user-profile-container {
+    min-width: 180px; /* Ancho fijo para evitar desplazamientos */
+    text-align: right;
+}
+
+.search-bar input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* Menú desplegable con animación */
+.dropdown-menu {
+    position: absolute;
+    z-index: 1050;
+    background: #ffffff !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    padding: 10px 0;
+    border: 1px solid #e0e0e0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    display: none;
+}
+/* Mostrar el menú desplegable cuando la clase 'show' está presente */
+.dropdown-menu.show {
+    display: block ;
+    opacity: 1 ;
+    transform: translateY(0);
+}
+
+/* Eliminar la transparencia al hacer hover */
+.dropdown-menu:hover {
+    opacity: 1 !important;
+    background-color: #ffffff !important;
+}
+
+/* Estilo de cada opción del menú */
+.dropdown-menu .dropdown-item {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 20px;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    padding: 12px 15px;
+    color: #333;
+    transition: background 0.2s ease-in-out;
 }
 
+/* Íconos más profesionales */
+.dropdown-menu .dropdown-item i {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Efecto hover */
+.dropdown-menu .dropdown-item:hover {
+    background: #f5f5f5;
+    color: #2c3e50;
+}
+
+/* Separador */
+.dropdown-divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 5px 0;
+}
+
+/* Botón de cerrar sesión */
+.dropdown-menu .logout {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.dropdown-menu .logout:hover {
+    background: #f8d7da;
+    color: #a94442;
+}
 .content .dashboard-cards .card {
     width: 100%;
     margin-bottom: 10px;
@@ -204,6 +335,106 @@ body {
     font-weight: bold;
 }
 
+/* Estilos generales para las tarjetas de resumen */
+.summary-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Ajuste para cada tarjeta */
+.summary-cards .card {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Sombra más marcada al hacer hover */
+.summary-cards .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+
+/* Estilos de los encabezados de cada tarjeta */
+.summary-cards .card-header {
+    display: flex;
+    justify-content: space-between; /* Distribuye el título a la izquierda y el botón a la derecha */
+    align-items: center;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: #2c3e50 !important;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+}
+
+.summary-cards .card-body h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #2c3e50; /* Azul oscuro */
+}
+.summary-cards .card-body p {
+    font-size: 14px;
+    color: #555;
+}
+
+.summary-cards .card-header span,
+.summary-cards .card-header i,
+.summary-cards .card-header a {
+    color: white !important;
+}
+/* Forzar color blanco en encabezados */
+.summary-cards .card-header span,
+.summary-cards .card-header i,
+.summary-cards .card-header a {
+    color: white !important;
+}
+
+/* Botón de enlace en encabezados */
+.summary-cards .card-header a {
+    margin-left: auto; /* Empuja el enlace hacia la derecha */
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.summary-cards .card-header a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+/* Estilos para el contenido de las tarjetas */
+.summary-cards .card-body {
+    text-align: center;
+    padding: 15px;
+}
+
+@media (min-width: 1024px) {
+    .summary-cards .card {
+        width: 45%;
+    }
+}
+
+@media (min-width: 768px) {
+    .summary-cards .card {
+        width: 48%;
+    }
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .summary-cards .card {
+        width: 100%;
+    }
+}
 
 .inventory-status-card {
     width: 100%;
@@ -347,4 +578,112 @@ input[type="password"] {
 
 body, .content {
     font-family: 'Arial', sans-serif !important;
+}
+
+/* Cambia el color del texto del Dashboard a blanco */
+.nav-item .nav-link {
+    color: white !important; /* Fuerza el color blanco */
+}
+
+/* Asegura que el ícono y el texto en el Dashboard se mantengan blancos */
+.nav-item .nav-link i {
+    color: white !important;
+}
+
+/* Cambia el color del texto cuando está activo */
+.nav-item .nav-link.active {
+    color: white !important;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2); /* Leve fondo para destacar */
+    border-radius: 5px;
+}
+
+/* Evita que el botón se vuelva azul o celeste en hover */
+.nav-item .nav-link:hover {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1); /* Un leve fondo al pasar el mouse */
+}
+
+/* Estilos para la nueva sección de perfil en el header */
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    padding: 8px 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap; /* Evita que los elementos del perfil se dividan en varias líneas */
+}
+
+/* Imagen de perfil */
+.user-profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* Información del usuario */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #2c3e50;
+    max-width: 120px; /* Limita el ancho */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-institution {
+    font-size: 12px;
+    color: #7f8c8d;
+    margin: 0;
+}
+
+
+/* Estilizar el contenedor de la barra de búsqueda */
+.search-bar {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+}
+
+/* Estilizar la lista de sugerencias */
+#searchResults {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 999;
+}
+
+/* Estilizar cada ítem de la lista */
+#searchResults li {
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+/* Hover en opciones */
+#searchResults li:hover {
+    background: #f8f9fa;
+}
+
+/* Si no hay resultados, texto en gris */
+#searchResults li.text-muted {
+    color: #999;
+    cursor: default;
 }

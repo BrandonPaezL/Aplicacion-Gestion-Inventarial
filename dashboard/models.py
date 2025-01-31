@@ -102,4 +102,4 @@ class Entrega(models.Model):
     responsable = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.elemento} - {self.fecha}"
+        return f"{self.responsable} entregó {self.cantidad} {self.elemento} el {self.fecha}"

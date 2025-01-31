@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Búsqueda</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'dashboard/styles.css' %}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Resultados de búsqueda para: "{{ query }}"</h2>
+
+        {% if resultados_productos %}
+            <h4>Productos encontrados:</h4>
+            <ul class="list-group">
+                {% for producto in resultados_productos %}
+                    <li class="list-group-item">
+                        <a href="{% url 'detalle_producto' producto.id %}">{{ producto.nombre }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se encontraron productos.</p>
+        {% endif %}
+
+        {% if resultado_seccion %}
+            <h4>Sección encontrada:</h4>
+            <a href="{{ resultado_seccion }}" class="btn btn-primary">Ir a {{ query }}</a>
+        {% endif %}
+
+        <a href="{% url 'index' %}" class="btn btn-secondary mt-3">Volver al Inicio</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

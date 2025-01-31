@@ -48,6 +48,8 @@ urlpatterns = [
     path('cronograma/editar/<int:entrega_id>/', views.editar_entrega, name='editar_entrega'),
     path('cronograma/eliminar/<int:entrega_id>/', views.eliminar_entrega, name='eliminar_entrega'),
     path('cronograma/calendario/', views.vista_calendario, name='vista_calendario'),
+    path('buscar/', views.buscar, name='buscar'),
+    path('buscar_sugerencias/', views.buscar_sugerencias, name='buscar_sugerencias'),
 ]
 
 
